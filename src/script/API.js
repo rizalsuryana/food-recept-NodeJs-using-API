@@ -1,6 +1,6 @@
 const daftarMakanan = document.querySelector('#meal');
 
-function tampilkanMakanan() {
+const tampilkanMakanan = () => {
     let teksPencarian = document.querySelector('#find-input').value;
     console.log()
     const GET_Food = async () => {
