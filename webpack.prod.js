@@ -22,48 +22,38 @@
 // });
 
 
+// webpack.prod.js
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
 
 module.exports = merge(common, {
   mode: 'production',
-  
-  // Ensure the correct output directory is set
   output: {
-    path: path.resolve(__dirname, 'dist'),  // Set the output folder (you can change 'dist' to any name you prefer)
-    filename: '[name].[contenthash].js',   // Ensure unique filenames with content hashes
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[contenthash].js',
   },
-
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-            },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
           },
-        ],
+        },
       },
-      // You can also add CSS handling here if needed, e.g., css-loader and style-loader
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
-
   plugins: [
-    // If you're using HTML Webpack Plugin, include it here
-    // new HtmlWebpackPlugin({
-    //   template: './src/index.html',  // Path to your HTML template
-    // }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',  // Ensure the correct path to your template HTML
+    }),
   ],
-
-  // You can also configure optimization if needed
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
 });
